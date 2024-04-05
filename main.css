@@ -1,0 +1,67 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin:0;
+    background-image: repeating-linear-gradient(rgb(147, 212, 147), yellow); 
+}
+
+@font-face {
+    font-family: Proxima;
+    src: url(fonts/proximanova.otf);
+    src: url(fonts/proxmianova.otf) format ('onlytype');
+    font-weight:100px;
+    font-style:normal;
+}
+
+@font-face {
+    font-family: Narnia;
+    src: url(fonts/Narnia.ttf);
+    src: url(fonts/Narnia.ttf) format ('truetype');
+    font-weight:100px;
+    font-style:normal;
+}
+
+.main-container {
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+}
+
+.menu {
+    display:flex;
+    justify-content:space-evenly;
+}
+
+.page {
+    color:green;
+    font-family: Proxima;
+    font-size:15px;
+    margin-top:15px;
+}
+
+.title {
+    display:flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+    margin-top:30px;
+}
+
+.name {
+    margin-top:15px;
+
+}
+
+.flavor {
+    font-size:300px;
+    text-align:center;
+    font-family: Narnia;
+    color:rgba(0, 128, 0, 0.358);
+}
+
+.can-container {
+    display:flex;
+    justify-content:space-evenly;
+}
+
