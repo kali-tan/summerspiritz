@@ -10,17 +10,27 @@ $(".name").click(
     }
 );
 
+window.addEventListener('resize', onWindowResize);
+
 // Create a scene
 var scene = new THREE.Scene();
 
 // Create a camera
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 5;
+camera.position.z = 9; // Increase the distance of the camera from the scene
 
-// Create a renderer
-var renderer = new THREE.WebGLRenderer();
+// Create a renderer with a specified background color
+var renderer = new THREE.WebGLRenderer({ alpha: true }); // Enable alpha for transparency
+renderer.setClearColor(0xffffff, 0); // Set clear color to white with 0 opacity
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+// Update renderer size on window resize
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
 // adding lighting
 var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -30,42 +40,59 @@ var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.position.set(1, 1, 1).normalize();
 scene.add(directionalLight);
 
+// Define the height and radius of the cylinder
+var height = 5.5;
+var radius = 1;
+var separation = 3; // Adjust the separation between cylinders
+
+// Define the number of segments
+var radialSegments = 32;
+var heightSegments = 1; // Set to 1 to create only one segment for the height
 
 // Create cylinder geometry
-var geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+var geometry = new THREE.CylinderGeometry(radius, radius, height, radialSegments, heightSegments, false);
+
 var textureLoader = new THREE.TextureLoader();
-var texture = textureLoader.load('files/leisure_lime_package.png');
-var material = new THREE.MeshBasicMaterial({ map: texture });
-var cylinder = new THREE.Mesh(geometry, material);
-scene.add(cylinder);
+var sideTexture = textureLoader.load('files/silvercan.jpeg');
+var topTexture = textureLoader.load('files/leisure_lime_package.png');
+var bottomTexture = textureLoader.load('files/soda_can_top.png');
 
-// Add interactivity to the cylinder
-var raycaster = new THREE.Raycaster();
-var mouse = new THREE.Vector2();
+// Create materials for top, bottom, and side
+var topMaterial = new THREE.MeshPhongMaterial({ map: topTexture });
+var bottomMaterial = new THREE.MeshPhongMaterial({ map: bottomTexture });
+var sideMaterial = new THREE.MeshPhongMaterial({ map: sideTexture });
 
-function onMouseMove(event) {
-    // Calculate mouse position in normalized device coordinates
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+// Create mesh with multi-material
+var materials = [topMaterial, bottomMaterial, sideMaterial];
 
-    // Update the picking ray with the camera and mouse position
-    raycaster.setFromCamera(mouse, camera);
+// Define the height offset for the cans
+var heightOffset = 3;
 
-    // Calculate objects intersecting the picking ray
-    var intersects = raycaster.intersectObjects(scene.children);
+// Create cylinders and position them
+var cylinder1 = new THREE.Mesh(geometry, materials);
+var cylinder2 = new THREE.Mesh(geometry, materials);
+var cylinder3 = new THREE.Mesh(geometry, materials);
+var cylinder4 = new THREE.Mesh(geometry, materials);
+cylinder1.position.y = heightOffset;
+cylinder2.position.y = heightOffset;
+cylinder3.position.y = heightOffset;
+cylinder4.position.y = heightOffset;
+cylinder1.position.x = -separation * 2;
+cylinder2.position.x = 0.6 * separation;
+cylinder3.position.x = -separation * 0.6;
+cylinder4.position.x = separation * 2;
+scene.add(cylinder1, cylinder2, cylinder3, cylinder4);
 
-    if (intersects.length > 0) {
-        // Apply your interactive logic here
-        cylinder.rotation.x += 0.01;
-        cylinder.rotation.y += 0.01;
-    }
-}
-
-window.addEventListener('mousemove', onMouseMove);
 
 // Render the scene
 function animate() {
     requestAnimationFrame(animate);
+    cylinder1.rotation.y += 0.02; // Rotate the cylinders
+    cylinder2.rotation.y += 0.02;
+    cylinder3.rotation.y += 0.02;
+    cylinder4.rotation.y += 0.02;
     renderer.render(scene, camera);
 }
 animate();
+
+
