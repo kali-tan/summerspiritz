@@ -4,9 +4,14 @@
 
 body {
     margin:0;
-    background-image: repeating-radial-gradient(#f2873e, #f5f06c, #ec557f); 
+    background-image: repeating-radial-gradient(#ffffff, #2ba9cb);
     cursor: url('files/cantabcursor.png'),auto;
 } 
+
+.page-main-container {
+    height:100vh;
+    background-color:#2ba9cb;
+}
 
 @font-face {
     font-family: Proxima;
@@ -83,8 +88,8 @@ body {
     text-align:center;
     font-family: Narnia;
     color:white;
-    animation: slide 7s infinite linear;
-    transition:1s;
+    /* animation: slide 7s infinite linear; */
+    /* transition:1s; */
     /* background-color:blue; */
 } 
 
@@ -117,7 +122,7 @@ body {
     font-family: ProximaBold;
     font-size:50px;
     text-align:center;
-    color:white;
+    color:#fff09a;
     margin-left:100px;
     margin-right:100px;
     margin-bottom:100px;
@@ -127,8 +132,8 @@ body {
     font-family: Proxima ;
     color:white;
     font-size:20px;
-    margin-left:250px;
-    margin-right:250px;
+    margin-left:100px;
+    margin-right:100px;
     text-align:center;
 }
 
