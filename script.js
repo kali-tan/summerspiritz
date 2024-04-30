@@ -143,19 +143,17 @@ function handleHover(event) {
     event.target.rotation.x += Math.PI / 6; // Rotate around the x-axis by 30 degrees
 }
 
-// Function to handle mouse hover out from the can
-function handleHoverOut(event) {
-    console.log('Hovering out of the can');
-    // Reset the can to its original size and rotation
-    event.target.scale.set(1, 1, 1); // Reset scale
-    event.target.rotation.x = 0; // Reset rotation
+// Function to handle mouse hover over the can
+function handleHover(event) {
+    event.target.classList.add('hovered');
 }
 
-cylinder1.userData.hoverable = true;
-cylinder2.userData.hoverable = true;
-cylinder3.userData.hoverable = true;
-cylinder4.userData.hoverable = true;
+// Function to handle mouse hover out from the can
+function handleHoverOut(event) {
+    event.target.classList.remove('hovered');
+}
 
+// Add event listeners to the cylinders
 cylinder1.addEventListener('mouseenter', handleHover);
 cylinder1.addEventListener('mouseleave', handleHoverOut);
 cylinder2.addEventListener('mouseenter', handleHover);
@@ -165,13 +163,12 @@ cylinder3.addEventListener('mouseleave', handleHoverOut);
 cylinder4.addEventListener('mouseenter', handleHover);
 cylinder4.addEventListener('mouseleave', handleHoverOut);
 
-
 function animate() {
     requestAnimationFrame(animate);
-    cylinder1.rotation.y += 0.03; 
-    cylinder2.rotation.y += 0.03;
-    cylinder3.rotation.y += 0.03;
-    cylinder4.rotation.y += 0.03;
+    cylinder1.rotation.y += 0.02; 
+    cylinder2.rotation.y += 0.02;
+    cylinder3.rotation.y += 0.02;
+    cylinder4.rotation.y += 0.02;
     renderer.render(scene, camera);
 }
 animate();

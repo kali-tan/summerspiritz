@@ -9,7 +9,6 @@ body {
 } 
 
 .page-main-container {
-    height:100vh;
     background-color:#2ba9cb;
 }
 
@@ -125,7 +124,7 @@ body {
     color:#fff09a;
     margin-left:100px;
     margin-right:100px;
-    margin-bottom:100px;
+    margin-bottom:50px;
 }
 
 .bodytext {
@@ -135,6 +134,8 @@ body {
     margin-left:100px;
     margin-right:100px;
     text-align:center;
+    margin-top:50px;
+    margin-bottom:50px;
 }
 
 .canvas-wrapper {
@@ -151,3 +152,12 @@ body {
     z-index: 1;
 }
 
+.image {
+    display:flex;
+    justify-content: center;
+}
+
+.hovered {
+    transform: scale(1.2) rotateX(30deg); /* Scale up by 20% and tilt by 30 degrees */
+    transition: transform 0.3s ease;
+}
