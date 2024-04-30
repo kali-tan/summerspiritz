@@ -10,6 +10,24 @@ $(".name").click(
     }
 );
 
+$(".flavors").click(
+    function(){
+        window.location.href='flavors.html';
+    }
+);
+
+$(".cart").click(
+    function(){
+        window.location.href='cart.html';
+    }
+);
+
+$(".contact").click(
+    function(){
+        window.location.href='contact.html';
+    }
+);
+
 window.addEventListener('resize', onWindowResize);
 
 // scene
@@ -121,7 +139,7 @@ var cylinder3 = new THREE.Mesh(geometry, materials3);
 var materials4 = [topMaterial4, bottomMaterial4, sideMaterial4];
 var cylinder4 = new THREE.Mesh(geometry, materials4);
 
-var heightOffset = 1;
+var heightOffset = 0.2;
 
 cylinder1.position.y = heightOffset;
 cylinder2.position.y = heightOffset;
@@ -133,35 +151,57 @@ cylinder3.position.x = -separation * 0.6;
 cylinder4.position.x = separation * 2;
 scene.add(cylinder1, cylinder2, cylinder3, cylinder4);
 
-// Function to handle mouse hover over the can
-function handleHover(event) {
-    console.log ('Hovering over the can');
-    // Enlarge the can
-    event.target.scale.set(1.2, 1.2, 1.2); // Scale up by 20%
+// Create a raycaster
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
 
-    // Tilt the can
-    event.target.rotation.x += Math.PI / 6; // Rotate around the x-axis by 30 degrees
+// Function to handle mouse move
+function onMouseMove(event) {
+    // Calculate mouse position in normalized device coordinates
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // Update the raycaster's position and direction
+    raycaster.setFromCamera(mouse, camera);
+
+    // Calculate objects intersecting the raycaster
+    var intersects = raycaster.intersectObjects(scene.children, true);
+
+    // Reset scale and rotation for all cylinders
+    cylinder1.scale.set(1, 1, 1);
+    cylinder2.scale.set(1, 1, 1);
+    cylinder3.scale.set(1, 1, 1);
+    cylinder4.scale.set(1, 1, 1);
+    cylinder1.rotation.x = 0;
+    cylinder2.rotation.x = 0;
+    cylinder3.rotation.x = 0;
+    cylinder4.rotation.x = 0;
+
+    // Check if the ray intersects with any cylinders
+    if (intersects.length > 0) {
+        var intersectedObject = intersects[0].object;
+        // Check which cylinder is intersected
+        if (intersectedObject === cylinder1 || intersectedObject.parent === cylinder1) {
+            handleHover(cylinder1);
+        } else if (intersectedObject === cylinder2 || intersectedObject.parent === cylinder2) {
+            handleHover(cylinder2);
+        } else if (intersectedObject === cylinder3 || intersectedObject.parent === cylinder3) {
+            handleHover(cylinder3);
+        } else if (intersectedObject === cylinder4 || intersectedObject.parent === cylinder4) {
+            handleHover(cylinder4);
+        }
+    }
 }
 
-// Function to handle mouse hover over the can
-function handleHover(event) {
-    event.target.classList.add('hovered');
+// Add event listener for mouse move
+document.addEventListener('mousemove', onMouseMove, false);
+
+// Function to handle hover effect
+function handleHover(cylinder) {
+    cylinder.scale.set(1.2, 1.2, 1.2); // Scale up by 20%
+    cylinder.rotation.x = Math.PI / 6; // Tilt by 30 degrees (in radians)
 }
 
-// Function to handle mouse hover out from the can
-function handleHoverOut(event) {
-    event.target.classList.remove('hovered');
-}
-
-// Add event listeners to the cylinders
-cylinder1.addEventListener('mouseenter', handleHover);
-cylinder1.addEventListener('mouseleave', handleHoverOut);
-cylinder2.addEventListener('mouseenter', handleHover);
-cylinder2.addEventListener('mouseleave', handleHoverOut);
-cylinder3.addEventListener('mouseenter', handleHover);
-cylinder3.addEventListener('mouseleave', handleHoverOut);
-cylinder4.addEventListener('mouseenter', handleHover);
-cylinder4.addEventListener('mouseleave', handleHoverOut);
 
 function animate() {
     requestAnimationFrame(animate);
@@ -172,7 +212,3 @@ function animate() {
     renderer.render(scene, camera);
 }
 animate();
-
-
-
-
